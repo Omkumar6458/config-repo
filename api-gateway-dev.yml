@@ -29,14 +29,14 @@ spring:
 
       routes:
         - id: account-service
-          uri: lb://ACCOUNT-SERVICE
+          uri: http://localhost:8081  
           predicates:
             - Path=/api/account/**
           filters:
             - StripPrefix=1
 
         - id: transaction-service
-          uri: lb://TRANSACTION-SERVICE
+          uri: http://localhost:8082  
           predicates:
             - Path=/api/transaction/**
           filters:
@@ -46,10 +46,10 @@ spring:
                 name: transactionCircuitBreaker
                 fallbackUri: forward:/fallback/transaction
 
+# ✅ CORRECT POSITION
 eureka:
   client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+    enabled: false
 
 management:
   endpoints:
