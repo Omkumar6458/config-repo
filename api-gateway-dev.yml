@@ -12,7 +12,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081/auth-service
+          issuer-uri: http://localhost:9000   # FIXED
 
   data:
     redis:
@@ -29,16 +29,16 @@ spring:
 
       routes:
         - id: account-service
-          uri: http://localhost:8081
+          uri: lb://ACCOUNT-SERVICE   # FIXED
           predicates:
-            - Path=/api/account/**
+            - Path=/api/accounts/**   # FIXED
           filters:
             - StripPrefix=1
 
         - id: transaction-service
-          uri: http://localhost:8082
+          uri: lb://TRANSACTION-SERVICE   # FIXED
           predicates:
-            - Path=/api/transaction/**
+            - Path=/api/transactions/**   # FIXED
           filters:
             - StripPrefix=1
             - name: CircuitBreaker
@@ -48,13 +48,11 @@ spring:
 
 eureka:
   client:
-    enabled: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka   # ENABLED
 
 management:
   endpoints:
     web:
       exposure:
-        include:
-          - health
-          - info
-          - prometheus
+        include: health,info,prometheus
