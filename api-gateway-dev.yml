@@ -35,6 +35,13 @@ spring:
                 name: transactionCircuitBreaker
                 fallbackUri: forward:/fallback/transaction
 
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**, /oauth2/**
+          filters:
+            - StripPrefix=1
+
 eureka:
   client:
     service-url:
