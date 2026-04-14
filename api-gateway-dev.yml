@@ -12,33 +12,22 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9000   # FIXED
-
-  data:
-    redis:
-      host: localhost
-      port: 6379
+          jwk-set-uri: http://localhost:9000/oauth2/jwks
 
   cloud:
     gateway:
-      default-filters:
-        - name: RequestRateLimiter
-          args:
-            redis-rate-limiter.replenishRate: 5
-            redis-rate-limiter.burstCapacity: 10
-
       routes:
         - id: account-service
-          uri: lb://ACCOUNT-SERVICE   # FIXED
+          uri: lb://ACCOUNT-SERVICE
           predicates:
-            - Path=/api/accounts/**   # FIXED
+            - Path=/api/accounts/**
           filters:
             - StripPrefix=1
 
         - id: transaction-service
-          uri: lb://TRANSACTION-SERVICE   # FIXED
+          uri: lb://TRANSACTION-SERVICE
           predicates:
-            - Path=/api/transactions/**   # FIXED
+            - Path=/api/transactions/**
           filters:
             - StripPrefix=1
             - name: CircuitBreaker
@@ -49,7 +38,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka   # ENABLED
+      defaultZone: http://localhost:8761/eureka
 
 management:
   endpoints:
